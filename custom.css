@@ -1,0 +1,43 @@
+﻿.rounded-red {
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:#BD362F;
+    color: white;
+}
+
+.rounded-gray {
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:lightgray;
+}
+
+.rounded-orange {
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:#F89406;
+    color: white;
+}
+
+.rounded-green {
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:#51A351;
+    color: white;
+}
+
+.rounded-blue {
+    -moz-border-radius:3px 3px 3px 3px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:#0088CC;
+    color: white;
+}
+
+.htext {
+    color: black;
+    font-size: larger;
+}
