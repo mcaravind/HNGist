@@ -135,18 +135,25 @@ $(function () {
 				    sortable = sortable.slice(0, 15);
 				    shuffle(sortable);
 				    var maxHeightPercent = 100;
+				    tagCloudString += '[';
 				    $.each(sortable, function (index, item) {
 				        var value = item[1];
 				        if (value > 1) {
-				            var percent = (value > 10) ? 10 + ((value - 10) / 10) : value;
-				            if ((50 + (percent * 100 / 5)) > maxHeightPercent) {
-				                maxHeightPercent = (50 + (percent * 100 / 5));
-				            }
-				            tagCloudString += '<span style="font-size:' + (50 + (percent * 100 / 5)) + '%">' + item[0] + '</span>&nbsp;';
-                            
+				            var countVal = value;
+				            //var percent = (value > 10) ? 10 + ((value - 10) / 10) : value;
+				            //if ((50 + (percent * 100 / 5)) > maxHeightPercent) {
+				            //    maxHeightPercent = (50 + (percent * 100 / 5));
+				            //}
+				            //tagCloudString += '<span style="font-size:' + (50 + (percent * 100 / 5)) + '%">' + item[0] + '</span>&nbsp;';
+				            var classLabel = 'rounded-blue';
+				            if (countVal >= 2 && countVal < 5) classLabel = 'rounded-blue';
+				            if (countVal >= 6 && countVal <= 10) classLabel = 'rounded-green';
+				            if (countVal >= 11 && countVal <= 15) classLabel = 'rounded-orange';
+				            if (countVal >= 16) classLabel = 'rounded-red';
+                            if(item[0]!=='' && countVal >=6) tagCloudString += ' <span class="' + classLabel + '">' + item[0] + ' <span class="label label-as-badge">'+countVal+'</span> </span>&nbsp;';
 				        }
 				    });
-				    
+				    tagCloudString += ']';
 				    var currSentences = currText.split('.');
 				    var bestSentence = currSentences[0];
 				    var bestAvg = -1;
