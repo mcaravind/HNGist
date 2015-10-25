@@ -5,10 +5,19 @@ var stop_words = new Array(
     'a', 'about', 'above', 'across', 'after', 'again', 'against', 'all', 'almost', 'alone', 'along', 'already', 'also', 'although', 'always', 'among', 'an', 'and', 'another', 'any', 'anybody', 'anyone', 'anything', 'anywhere', 'are', 'area', 'areas', 'around', 'as', 'ask', 'asked', 'asking', 'asks', 'at', 'away', 'b', 'back', 'backed', 'backing', 'backs', 'be', 'became', 'because', 'become', 'becomes', 'been', 'before', 'began', 'behind', 'being', 'beings', 'best', 'better', 'between', 'big', 'both', 'but', 'by', 'c', 'came', 'can', 'cannot', 'case', 'cases', 'certain', 'certainly', 'clear', 'clearly', 'come', 'could', 'd', 'did', 'differ', 'different', 'differently', 'do', 'does', 'done', 'down', 'down', 'downed', 'downing', 'downs', 'during', 'e', 'each', 'early','eg','either', 'end', 'ended', 'ending', 'ends', 'enough', 'even', 'evenly', 'ever', 'every', 'everybody', 'everyone', 'everything', 'everywhere', 'f', 'face', 'faces', 'fact', 'facts', 'far', 'felt', 'few', 'find', 'finds', 'first', 'for', 'four', 'from', 'full', 'fully', 'further', 'furthered', 'furthering', 'furthers', 'g', 'gave', 'general', 'generally', 'get', 'gets', 'give', 'given', 'gives', 'go', 'going', 'good', 'goods', 'got', 'great', 'greater', 'greatest', 'group', 'grouped', 'grouping', 'groups', 'h', 'had', 'has', 'have', 'having', 'he', 'her', 'here', 'herself', 'high', 'high', 'high', 'higher', 'highest', 'him', 'himself', 'his', 'how', 'however', 'i', 'if', 'important', 'in', 'interest', 'interested', 'interesting', 'interests', 'into', 'is', 'it', 'its', 'itself', 'j', 'just', 'k', 'keep', 'keeps', 'kind', 'knew', 'know', 'known', 'knows', 'l', 'large', 'largely', 'last', 'later', 'latest', 'least', 'less', 'let', 'lets', 'like', 'likely', 'long', 'longer', 'longest', 'm', 'made', 'make', 'making', 'man', 'many', 'may', 'me', 'member', 'members', 'men', 'might', 'more', 'most', 'mostly', 'mr', 'mrs', 'much', 'must', 'my', 'myself', 'n', 'necessary', 'need', 'needed', 'needing', 'needs', 'never', 'new', 'new', 'newer', 'newest', 'next', 'no', 'nobody', 'non', 'noone', 'not', 'nothing', 'now', 'nowhere', 'number', 'numbers', 'o', 'of', 'off', 'often', 'old', 'older', 'oldest', 'on', 'once', 'one', 'only', 'open', 'opened', 'opening', 'opens', 'or', 'order', 'ordered', 'ordering', 'orders', 'other', 'others', 'our', 'out', 'over', 'p', 'part', 'parted', 'parting', 'parts', 'per', 'perhaps', 'place', 'places', 'point', 'pointed', 'pointing', 'points', 'possible', 'present', 'presented', 'presenting', 'presents', 'problem', 'problems', 'put', 'puts', 'q', 'quite', 'r', 'rather', 'really', 'right', 'right', 'room', 'rooms', 's', 'said', 'same', 'saw', 'say', 'says', 'second', 'seconds', 'see', 'seem', 'seemed', 'seeming', 'seems', 'sees', 'several', 'shall', 'she', 'should', 'show', 'showed', 'showing', 'shows', 'side', 'sides', 'since', 'small', 'smaller', 'smallest', 'so', 'some', 'somebody', 'someone', 'something', 'somewhere', 'state', 'states', 'still', 'still', 'such', 'sure', 't', 'take', 'taken', 'than', 'that', 'the', 'their', 'them', 'then', 'there', 'therefore', 'these', 'they', 'thing', 'things', 'think', 'thinks', 'this', 'those', 'though', 'thought', 'thoughts', 'three', 'through', 'thus', 'to', 'today', 'together', 'too', 'took', 'toward', 'turn', 'turned', 'turning', 'turns', 'two', 'u', 'under', 'until', 'up', 'upon', 'us', 'use', 'used', 'uses', 'v', 'very', 'w', 'want', 'wanted', 'wanting', 'wants', 'was', 'way', 'ways', 'we', 'well', 'wells', 'went', 'were', 'what', 'when', 'where', 'whether', 'which', 'while', 'who', 'whole', 'whose', 'why', 'will', 'with', 'within', 'without', 'work', 'worked', 'working', 'works', 'would', 'x', 'y', 'year', 'years', 'yet', 'you', 'young', 'younger', 'youngest', 'your', 'yours', 'z', '-----', 'don\'t', 'can\'t', 'it\'s','i\'m','+','doesn\'t'
     );
 
-window.collapseAll= function() {
+window.collapseAll = function () {
+    var currLinkText = document.getElementById('lnkCollapseAll').innerHTML;
+    window.allCollapsed = currLinkText.indexOf('Collapse') > -1;
+    window.mainButtonClicked = true;
     $.each(window.buttonArray, function(index, val) {
         val.click();
     });
+    if (window.allCollapsed) {
+        document.getElementById('lnkCollapseAll').innerHTML = 'Expand All';
+    } else {
+        document.getElementById('lnkCollapseAll').innerHTML = 'Collapse All';
+    }
+    window.mainButtonClicked = false;
 }
 
 function getIndent(comment) {
@@ -19,7 +28,7 @@ $(function () {
 
     var subtext = $('td.subtext');
     $(subtext).append(' | ');
-    $(subtext).append('<a href="#" id="lnkCollapseAll">Expand/Collapse All</a>')
+    $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>')
 	//var commentButton = $('input[type="submit"][value="add comment"]');
     //$(commentButton).parent().append('<br/><br/><a href="#" id="lnkCollapseAll">Expand/Collapse All (toggle)</a>');
     document.getElementById("lnkCollapseAll").addEventListener("click", collapseAll, false);
@@ -60,9 +69,10 @@ $(function () {
             if (thisCommentIndent === 0) {
                 window.buttonArray.push(button);
             }
-			button.click(function()
-			{
-				if (isCollapsed)
+			button.click(function() {
+			    var expandThis = (window.mainButtonClicked && !window.allCollapsed) || (!window.mainButtonClicked && isCollapsed);
+			    var collapseThis = (window.mainButtonClicked && window.allCollapsed) || (!window.mainButtonClicked && !isCollapsed);
+			    if (expandThis)
 				{
 					for (var i = 0; i < collapsedComments.length; i++)
 					{
@@ -70,12 +80,12 @@ $(function () {
 					}
 					button.text('[-]');
 					isCollapsed = false;
-				    collapsedComments = null;
+                    if(window.mainButtonClicked) collapsedComments = null;
 				}
-				else {
+			    else if (collapseThis) {
+			        var thisComment = _this.parent().parent().parent().parent().parent().parent().parent();
 					if (collapsedComments == null)
 					{
-						var thisComment = _this.parent().parent().parent().parent().parent().parent().parent();
 						var thisIndent = getIndent(thisComment);
 						collapsedComments = [_this.parent().parent().children('span.comment')];
 						if (collapsedComments[0].next('p').length == 1)
@@ -140,11 +150,6 @@ $(function () {
 				        var value = item[1];
 				        if (value > 1) {
 				            var countVal = value;
-				            //var percent = (value > 10) ? 10 + ((value - 10) / 10) : value;
-				            //if ((50 + (percent * 100 / 5)) > maxHeightPercent) {
-				            //    maxHeightPercent = (50 + (percent * 100 / 5));
-				            //}
-				            //tagCloudString += '<span style="font-size:' + (50 + (percent * 100 / 5)) + '%">' + item[0] + '</span>&nbsp;';
 				            var classLabel = 'rounded-blue';
 				            if (countVal >= 2 && countVal < 5) classLabel = 'rounded-blue';
 				            if (countVal >= 6 && countVal <= 10) classLabel = 'rounded-green';
@@ -185,7 +190,7 @@ $(function () {
                                     if (countVal >= 6 && countVal <= 10) classLabel = 'rounded-green';
                                     if (countVal >= 11 && countVal <= 15) classLabel = 'rounded-orange';
                                     if (countVal >= 16) classLabel = 'rounded-red';
-                                    if (countVal >= 6) {
+                                    if (countVal >= 6 && actualVal.length>1) {
                                         item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
                                     }
                                 }
@@ -198,8 +203,13 @@ $(function () {
                             }
                         }
 				    });
+				    var commentClassLabel = 'rounded-gray';
+				    if (collapsedComments.length > 10) commentClassLabel = 'rounded-green';
+				    if (collapsedComments.length > 20) commentClassLabel = 'rounded-orange';
+				    if (collapsedComments.length > 30) commentClassLabel = 'rounded-red';
+				    if (collapsedComments.length > 40) commentClassLabel = 'rounded-blue';
 				    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
-				    button.html('[+] <span class="rounded-gray">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
+				    button.html('[+] <span class="'+commentClassLabel+'">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
 					if (isDeleted)
 					{
 						_this.parent().next().show();
@@ -207,7 +217,7 @@ $(function () {
 
 					isCollapsed = true;
 				}
-				
+			    
 				return false;
 			});
 			
