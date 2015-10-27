@@ -183,13 +183,13 @@ $(function () {
                                     window.stemmerDict[stemmed] = value;
                                 }
                                 if (dict.hasOwnProperty(value)) {
-                                    totalScore += dict[value];
+                                    if ($.inArray(actualVal.toLowerCase(), stop_words) === -1) totalScore += dict[value];
                                     var countVal = dict[value];
                                     var classLabel = 'rounded-blue';
                                     if (countVal >= 2 && countVal < 5) classLabel = 'rounded-blue';
-                                    if (countVal >= 6 && countVal <= 10) classLabel = 'rounded-green';
-                                    if (countVal >= 11 && countVal <= 15) classLabel = 'rounded-orange';
-                                    if (countVal >= 16) classLabel = 'rounded-red';
+                                    if (countVal >= 6 && countVal < 10) classLabel = 'rounded-green';
+                                    if (countVal >= 10 && countVal < 15) classLabel = 'rounded-orange';
+                                    if (countVal >= 15) classLabel = 'rounded-red';
                                     if (countVal >= 6 && actualVal.length>1) {
                                         item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
                                     }
