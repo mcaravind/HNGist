@@ -28,7 +28,7 @@ $(function () {
 
     var subtext = $('td.subtext');
     $(subtext).append(' | ');
-    $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>')
+    $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
 	//var commentButton = $('input[type="submit"][value="add comment"]');
     //$(commentButton).parent().append('<br/><br/><a href="#" id="lnkCollapseAll">Expand/Collapse All (toggle)</a>');
     document.getElementById("lnkCollapseAll").addEventListener("click", collapseAll, false);
@@ -60,6 +60,7 @@ $(function () {
 				.text('[-]')
             .addClass('linkButton')
 		    ;
+		    var collapsedText = $('<span></span>').text('');
 			
 			
 			var isDeleted = false;
@@ -79,6 +80,7 @@ $(function () {
 						collapsedComments[i].show();
 					}
 					button.text('[-]');
+				    collapsedText.text('');
 					isCollapsed = false;
                     if(window.mainButtonClicked) collapsedComments = null;
 				}
@@ -209,7 +211,8 @@ $(function () {
 				    if (collapsedComments.length > 30) commentClassLabel = 'rounded-red';
 				    if (collapsedComments.length > 40) commentClassLabel = 'rounded-blue';
 				    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
-				    button.html('[+] <span class="'+commentClassLabel+'">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
+				    button.html('[+]');
+				    collapsedText.html(' | <span class="' + commentClassLabel + '">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
 					if (isDeleted)
 					{
 						_this.parent().next().show();
@@ -226,6 +229,7 @@ $(function () {
 			{
 				_this.append(' | ');
 				_this.append(button);
+			    _this.append(collapsedText);
 			}
 			else
 			{
