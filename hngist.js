@@ -25,10 +25,18 @@ function getIndent(comment) {
     return parseInt(comment.find('td>table>tbody>tr>td:eq(0)>img').attr('width'), 10);
 }
 $(function () {
-
+    window.pageType = null;
     var subtext = $('td.subtext');
-    $(subtext).append(' | ');
-    $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
+    if (subtext.length > 0) {
+        $(subtext).append(' | ');
+        $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
+        window.pageType = 'main';
+    } else {
+        var top = $('span.comhead')[0];
+        $(top).append(' | ');
+        $(top).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
+        window.pageType = 'comment';
+    }
 	//var commentButton = $('input[type="submit"][value="add comment"]');
     //$(commentButton).parent().append('<br/><br/><a href="#" id="lnkCollapseAll">Expand/Collapse All (toggle)</a>');
     document.getElementById("lnkCollapseAll").addEventListener("click", collapseAll, false);
@@ -148,6 +156,7 @@ $(function () {
 				    shuffle(sortable);
 				    var maxHeightPercent = 100;
 				    tagCloudString += '[';
+				    
 				    $.each(sortable, function (index, item) {
 				        var value = item[1];
 				        if (value > 1) {
@@ -184,15 +193,18 @@ $(function () {
                                 } else {
                                     window.stemmerDict[stemmed] = value;
                                 }
+                                var wordHighlightMin = 6;
+                                if (window.pageType === 'main') wordHighlightMin = 6;
+                                if (window.pageType === 'comment') wordHighlightMin = 3;
                                 if (dict.hasOwnProperty(value)) {
                                     if ($.inArray(actualVal.toLowerCase(), stop_words) === -1) totalScore += dict[value];
                                     var countVal = dict[value];
                                     var classLabel = 'rounded-blue';
-                                    if (countVal >= 2 && countVal < 5) classLabel = 'rounded-blue';
+                                    if (countVal >= 3 && countVal < 5) classLabel = 'rounded-blue';
                                     if (countVal >= 6 && countVal < 10) classLabel = 'rounded-green';
                                     if (countVal >= 10 && countVal < 15) classLabel = 'rounded-orange';
                                     if (countVal >= 15) classLabel = 'rounded-red';
-                                    if (countVal >= 6 && actualVal.length>1) {
+                                    if (countVal >= wordHighlightMin && actualVal.length>1) {
                                         item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
                                     }
                                 }
@@ -205,11 +217,16 @@ $(function () {
                             }
                         }
 				    });
+				    var greenHighlightMin = (window.pageType === 'main')?10:2;
+				    var orangeHighlightMin = (window.pageType === 'main') ? 20 : 5;
+				    var redHighlightMin = (window.pageType === 'main') ? 30 : 10;
+			        var blueHighlighMin = (window.pageType === 'main') ? 40 : 15;
+				    
 				    var commentClassLabel = 'rounded-gray';
-				    if (collapsedComments.length > 10) commentClassLabel = 'rounded-green';
-				    if (collapsedComments.length > 20) commentClassLabel = 'rounded-orange';
-				    if (collapsedComments.length > 30) commentClassLabel = 'rounded-red';
-				    if (collapsedComments.length > 40) commentClassLabel = 'rounded-blue';
+				    if (collapsedComments.length > greenHighlightMin) commentClassLabel = 'rounded-green';
+				    if (collapsedComments.length > orangeHighlightMin) commentClassLabel = 'rounded-orange';
+				    if (collapsedComments.length > redHighlightMin) commentClassLabel = 'rounded-red';
+				    if (collapsedComments.length > blueHighlighMin) commentClassLabel = 'rounded-blue';
 				    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
 				    button.html('[+]');
 				    collapsedText.html(' | <span class="' + commentClassLabel + '">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
