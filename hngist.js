@@ -170,7 +170,7 @@ $(function () {
 				        }
 				    });
 				    tagCloudString += ']';
-			        currText = currText.replace(new RegExp('\\? '), '?.');
+			        currText = replaceAll(currText,'? ','?.');//currText.replace(new RegExp(/[\\?] /,'g'), '?.');
 				    var currSentences = currText.split('.');
 				    var bestSentence = currSentences[0];
 				    var bestAvg = -1;
@@ -263,6 +263,14 @@ $(function () {
 			}
 		});
 });
+
+function escapeRegExp(string) {
+    return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
+}
+
+function replaceAll(string, find, replace) {
+    return string.replace(new RegExp(escapeRegExp(find), 'g'), replace);
+}
 
 String.prototype.endsWith = function (suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
