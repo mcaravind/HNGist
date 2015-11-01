@@ -18,6 +18,11 @@
     background-color:lightgray;
 }
 
+.no-highlight {
+    background-color:transparent;
+    color: black;
+}
+
 .rounded-orange {
     -moz-border-radius:3px 3px 3px 3px;
     border-radius:3px 3px 3px 3px;

@@ -18,6 +18,32 @@ window.collapseAll = function () {
         document.getElementById('btnCollapseAll').innerHTML = 'Collapse All';
     }
     window.mainButtonClicked = false;
+    toggleHighlights();
+}
+
+window.toggleHighlights = function() {
+    var checked = document.getElementById('cbxHighlight').checked;
+    if (checked) {
+        window.allHighlighted = true;
+        $(".rounded-blue").css("background-color", "#0088CC");
+        $(".rounded-orange").css("background-color", "#F89406");
+        $(".rounded-green").css("background-color", "#51A351");
+        $(".rounded-red").css("background-color", "#BD362F");
+        $(".rounded-blue").css("color", "white");
+        $(".rounded-orange").css("color", "white");
+        $(".rounded-green").css("color", "white");
+        $(".rounded-red").css("color", "white");
+    } else {
+        window.allHighlighted = false;
+        $(".rounded-blue").css("background-color", "transparent");
+        $(".rounded-orange").css("background-color", "transparent");
+        $(".rounded-green").css("background-color", "transparent");
+        $(".rounded-red").css("background-color", "transparent");
+        $(".rounded-blue").css("color", "black");
+        $(".rounded-orange").css("color", "black");
+        $(".rounded-green").css("color", "black");
+        $(".rounded-red").css("color", "black");
+    }
 }
 
 function getIndent(comment) {
@@ -30,14 +56,20 @@ $(function () {
     if (subtext.length > 0) {
         $(subtext).append(' | ');
         $(subtext).append('<button type="button" id="btnCollapseAll">Collapse All</button>');
+        $(subtext).append(' | ');
+        $(subtext).append('<input type="checkbox" id="cbxHighlight" checked="checked">Show Highlights</input>');
         window.pageType = 'main';
     } else {
         var top = $('span.comhead')[0];
         $(top).append(' | ');
         $(top).append('<button type="button" id="btnCollapseAll">Collapse All</button>');
+        $(top).append(' | ');
+        $(top).append('<input type="checkbox" id="cbxHighlight" checked="checked">Show Highlights</input>');
         window.pageType = 'comment';
     }
-	document.getElementById("btnCollapseAll").addEventListener("click", collapseAll, false);
+    window.allHighlighted = true;
+    document.getElementById("btnCollapseAll").addEventListener("click", collapseAll, false);
+    document.getElementById("cbxHighlight").addEventListener("change", toggleHighlights, false);
 	// comments page
 	var commentRowIndex = 2;
 
@@ -225,13 +257,13 @@ $(function () {
 				    var orangeHighlightMin = (window.pageType === 'main') ? 20 : 5;
 				    var redHighlightMin = (window.pageType === 'main') ? 30 : 10;
 			        var blueHighlighMin = (window.pageType === 'main') ? 40 : 15;
-				    
-				    var commentClassLabel = 'rounded-gray';
-				    if (collapsedComments.length >= greenHighlightMin) commentClassLabel = 'rounded-green';
-				    if (collapsedComments.length >= orangeHighlightMin) commentClassLabel = 'rounded-orange';
-				    if (collapsedComments.length >= redHighlightMin) commentClassLabel = 'rounded-red';
-				    if (collapsedComments.length >= blueHighlighMin) commentClassLabel = 'rounded-blue';
-				    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
+
+			        var commentClassLabel = 'rounded-gray';
+			        if (collapsedComments.length >= greenHighlightMin) commentClassLabel = 'rounded-green';
+			        if (collapsedComments.length >= orangeHighlightMin) commentClassLabel = 'rounded-orange';
+			        if (collapsedComments.length >= redHighlightMin) commentClassLabel = 'rounded-red';
+			        if (collapsedComments.length >= blueHighlighMin) commentClassLabel = 'rounded-blue';
+                    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
 				    button.html('[+]');
 				    collapsedText.html(' | <span class="' + commentClassLabel + '">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
 					if (isDeleted)
@@ -261,6 +293,16 @@ $(function () {
 			}
 		});
 });
+
+function htmlEncode(value) {
+    //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+    //then grab the encoded contents back out.  The div never exists on the page.
+    return $('<div/>').text(value).html();
+}
+
+function htmlDecode(value) {
+    return $('<div/>').html(value).text();
+}
 
 function escapeRegExp(string) {
     return string.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
