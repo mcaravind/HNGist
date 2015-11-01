@@ -11,5 +11,5 @@
    "manifest_version": 2,
    "name": "HNGist",
    "permissions": [ "http://news.ycombinator.com/item?id=*", "https://news.ycombinator.com/item?id=*" ],
-   "version": "1.0.0"
+   "version": "1.3.0"
 }

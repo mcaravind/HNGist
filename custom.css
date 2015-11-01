@@ -46,3 +46,14 @@
     color: black;
     font-size: larger;
 }
+
+button {
+    height: 14px;
+    width: 75px;
+    font-size: 9px;
+    border-radius:3px 3px 3px 3px;
+    border:solid 0.5px lightgray;
+    background-color:#ff6600;
+    cursor: pointer;
+    color: white;
+}

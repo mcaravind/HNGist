@@ -6,16 +6,16 @@ var stop_words = new Array(
     );
 
 window.collapseAll = function () {
-    var currLinkText = document.getElementById('lnkCollapseAll').innerHTML;
+    var currLinkText = document.getElementById('btnCollapseAll').innerHTML;
     window.allCollapsed = currLinkText.indexOf('Collapse') > -1;
     window.mainButtonClicked = true;
     $.each(window.buttonArray, function(index, val) {
         val.click();
     });
     if (window.allCollapsed) {
-        document.getElementById('lnkCollapseAll').innerHTML = 'Expand All';
+        document.getElementById('btnCollapseAll').innerHTML = 'Expand All';
     } else {
-        document.getElementById('lnkCollapseAll').innerHTML = 'Collapse All';
+        document.getElementById('btnCollapseAll').innerHTML = 'Collapse All';
     }
     window.mainButtonClicked = false;
 }
@@ -29,17 +29,15 @@ $(function () {
     var subtext = $('td.subtext');
     if (subtext.length > 0) {
         $(subtext).append(' | ');
-        $(subtext).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
+        $(subtext).append('<button type="button" id="btnCollapseAll">Collapse All</button>');
         window.pageType = 'main';
     } else {
         var top = $('span.comhead')[0];
         $(top).append(' | ');
-        $(top).append('<a href="#" id="lnkCollapseAll">Collapse All</a>');
+        $(top).append('<button type="button" id="btnCollapseAll">Collapse All</button>');
         window.pageType = 'comment';
     }
-	//var commentButton = $('input[type="submit"][value="add comment"]');
-    //$(commentButton).parent().append('<br/><br/><a href="#" id="lnkCollapseAll">Expand/Collapse All (toggle)</a>');
-    document.getElementById("lnkCollapseAll").addEventListener("click", collapseAll, false);
+	document.getElementById("btnCollapseAll").addEventListener("click", collapseAll, false);
 	// comments page
 	var commentRowIndex = 2;
 
@@ -170,7 +168,7 @@ $(function () {
 				        }
 				    });
 				    tagCloudString += ']';
-			        currText = replaceAll(currText,'? ','?.');//currText.replace(new RegExp(/[\\?] /,'g'), '?.');
+			        currText = replaceAll(currText,'? ','?.');
 				    var currSentences = currText.split('.');
 				    var bestSentence = currSentences[0];
 				    var bestAvg = -1;
@@ -229,10 +227,10 @@ $(function () {
 			        var blueHighlighMin = (window.pageType === 'main') ? 40 : 15;
 				    
 				    var commentClassLabel = 'rounded-gray';
-				    if (collapsedComments.length > greenHighlightMin) commentClassLabel = 'rounded-green';
-				    if (collapsedComments.length > orangeHighlightMin) commentClassLabel = 'rounded-orange';
-				    if (collapsedComments.length > redHighlightMin) commentClassLabel = 'rounded-red';
-				    if (collapsedComments.length > blueHighlighMin) commentClassLabel = 'rounded-blue';
+				    if (collapsedComments.length >= greenHighlightMin) commentClassLabel = 'rounded-green';
+				    if (collapsedComments.length >= orangeHighlightMin) commentClassLabel = 'rounded-orange';
+				    if (collapsedComments.length >= redHighlightMin) commentClassLabel = 'rounded-red';
+				    if (collapsedComments.length >= blueHighlighMin) commentClassLabel = 'rounded-blue';
 				    var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
 				    button.html('[+]');
 				    collapsedText.html(' | <span class="' + commentClassLabel + '">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
