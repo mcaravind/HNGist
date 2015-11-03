@@ -29,16 +29,19 @@ window.toggleHighlights = function() {
         $(".rounded-orange").css("background-color", "#F89406");
         $(".rounded-green").css("background-color", "#51A351");
         $(".rounded-red").css("background-color", "#BD362F");
+        $(".rounded-gray").css("background-color", "lightgray");
         $(".rounded-blue").css("color", "white");
         $(".rounded-orange").css("color", "white");
         $(".rounded-green").css("color", "white");
         $(".rounded-red").css("color", "white");
     } else {
         window.allHighlighted = false;
+        $(".rounded-gray").css("background-color", "transparent");
         $(".rounded-blue").css("background-color", "transparent");
         $(".rounded-orange").css("background-color", "transparent");
         $(".rounded-green").css("background-color", "transparent");
         $(".rounded-red").css("background-color", "transparent");
+        $(".rounded-gray").css("color", "black");
         $(".rounded-blue").css("color", "black");
         $(".rounded-orange").css("color", "black");
         $(".rounded-green").css("color", "black");
