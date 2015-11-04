@@ -207,7 +207,8 @@ $(function () {
 				    var currSentences = currText.split('.');
 				    var bestSentence = currSentences[0];
 				    var bestAvg = -1;
-				    $.each(currSentences, function(index, item) {
+				    $.each(currSentences, function (index, item) {
+				        item = htmlEncode(item);
 				        var currSentenceSplitted = item.split(/\s+/);
                         if (currSentenceSplitted.length > 5) {
                             var avg = 0.0;
@@ -238,8 +239,10 @@ $(function () {
                                     if (countVal >= 6 && countVal < 10) classLabel = 'rounded-green';
                                     if (countVal >= 10 && countVal < 15) classLabel = 'rounded-orange';
                                     if (countVal >= 15) classLabel = 'rounded-red';
-                                    if (countVal >= wordHighlightMin && actualVal.length>1) {
-                                        item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
+                                    if (countVal >= wordHighlightMin && actualVal.length > 1) {
+                                        if (actualVal.toLowerCase() !== 'class') {
+                                            item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
+                                        }
                                     }
                                 }
                                 numWords += 1;
