@@ -25,27 +25,27 @@ window.toggleHighlights = function() {
     var checked = document.getElementById('cbxHighlight').checked;
     if (checked) {
         window.allHighlighted = true;
-        $(".rounded-blue").css("background-color", "#0088CC");
         $(".rounded-orange").css("background-color", "#F89406");
-        $(".rounded-green").css("background-color", "#51A351");
-        $(".rounded-red").css("background-color", "#BD362F");
+        $(".rounded-orange").css("background-color", "#F89406");
+        $(".rounded-orange").css("background-color", "#F89406");
+        $(".rounded-orange").css("background-color", "#F89406");
         $(".rounded-gray").css("background-color", "lightgray");
-        $(".rounded-blue").css("color", "white");
         $(".rounded-orange").css("color", "white");
-        $(".rounded-green").css("color", "white");
-        $(".rounded-red").css("color", "white");
+        $(".rounded-orange").css("color", "white");
+        $(".rounded-orange").css("color", "white");
+        $(".rounded-orange").css("color", "white");
     } else {
         window.allHighlighted = false;
         $(".rounded-gray").css("background-color", "transparent");
-        $(".rounded-blue").css("background-color", "transparent");
         $(".rounded-orange").css("background-color", "transparent");
-        $(".rounded-green").css("background-color", "transparent");
-        $(".rounded-red").css("background-color", "transparent");
+        $(".rounded-orange").css("background-color", "transparent");
+        $(".rounded-orange").css("background-color", "transparent");
+        $(".rounded-orange").css("background-color", "transparent");
         $(".rounded-gray").css("color", "black");
-        $(".rounded-blue").css("color", "black");
         $(".rounded-orange").css("color", "black");
-        $(".rounded-green").css("color", "black");
-        $(".rounded-red").css("color", "black");
+        $(".rounded-orange").css("color", "black");
+        $(".rounded-orange").css("color", "black");
+        $(".rounded-orange").css("color", "black");
     }
 }
 
@@ -153,7 +153,7 @@ $(function () {
 					    allInnerText += textInFont.slice(0,textInFont.lastIndexOf('reply'));
 					    collapsedComments[i].hide();
 				    }
-				    var tagCloudString = '';
+				    var tagCloudString = ' | ';
 				    var splitted = allInnerText.split(/\s+/);
 				    
 				    var currDict = {};
@@ -184,25 +184,38 @@ $(function () {
                     for (var item in dict) {
                         sortable.push([item, dict[item]]);
                     }
+                    var medianArray = [];
+                    for (var item in dict) {
+                        medianArray.push(dict[item]);
+                    }
                     sortable.sort(function (a, b) { return b[1] - a[1] });
 				    sortable = sortable.slice(0, 15);
 				    shuffle(sortable);
+				    medianArray.sort(function (a, b) { return b -a });
+				    medianArray = medianArray.slice(0, 15);
+			        var median = findMedian(medianArray);
 				    var maxHeightPercent = 100;
-				    tagCloudString += '[';
-				    
+			        var count = 0;
+			        var emptyTagCloud = true;
 				    $.each(sortable, function (index, item) {
 				        var value = item[1];
 				        if (value > 1) {
 				            var countVal = value;
-				            var classLabel = 'rounded-blue';
-				            if (countVal >= 2 && countVal < 5) classLabel = 'rounded-blue';
-				            if (countVal >= 6 && countVal <= 10) classLabel = 'rounded-green';
-				            if (countVal >= 11 && countVal <= 15) classLabel = 'rounded-orange';
-				            if (countVal >= 16) classLabel = 'rounded-red';
-                            if(item[0]!=='' && countVal >=6) tagCloudString += ' <span class="' + classLabel + '">' + item[0] + ' <span class="label label-as-badge">'+countVal+'</span> </span>&nbsp;';
+				            var classLabel = 'rounded-gray';
+				            if (((window.pageType === 'main' && countVal >= 10) || (window.pageType === 'comment' && countVal >= 6)) && countVal >= median) classLabel = 'rounded-orange';
+				            var validItem = false;
+				            validItem = ((item[0].length === 2 && item[0] === item[0].toUpperCase())||item[0].length>=3);
+				            if ((validItem) && ((window.pageType === 'main' && countVal >= 6) || (window.pageType === 'comment' && countVal >= 3))) {
+                                tagCloudString += ' <span class="' + classLabel + '">&nbsp;' + item[0] + '&nbsp;</span>&nbsp;';
+                                emptyTagCloud = false;
+				                count += 1;
+				            }
 				        }
 				    });
-				    tagCloudString += ']';
+				    
+                    if (emptyTagCloud) {
+                        tagCloudString = '';
+                    }
 			        currText = replaceAll(currText,'? ','?.');
 				    var currSentences = currText.split('.');
 				    var bestSentence = currSentences[0];
@@ -234,14 +247,14 @@ $(function () {
                                 if (dict.hasOwnProperty(value)) {
                                     if ($.inArray(actualVal.toLowerCase(), stop_words) === -1) totalScore += dict[value];
                                     var countVal = dict[value];
-                                    var classLabel = 'rounded-blue';
-                                    if (countVal >= 3 && countVal < 5) classLabel = 'rounded-blue';
-                                    if (countVal >= 6 && countVal < 10) classLabel = 'rounded-green';
+                                    var classLabel = 'rounded-orange';
+                                    if (countVal >= 3 && countVal < 5) classLabel = 'rounded-orange';
+                                    if (countVal >= 6 && countVal < 10) classLabel = 'rounded-orange';
                                     if (countVal >= 10 && countVal < 15) classLabel = 'rounded-orange';
-                                    if (countVal >= 15) classLabel = 'rounded-red';
+                                    if (countVal >= 15) classLabel = 'rounded-orange';
                                     if (countVal >= wordHighlightMin && actualVal.length > 1) {
                                         if (actualVal.toLowerCase() !== 'class') {
-                                            item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
+                                            //item = item.replace(actualVal, '<span class="' + classLabel + '">' + actualVal + '</span>');
                                         }
                                     }
                                 }
@@ -265,13 +278,14 @@ $(function () {
 			        var blueHighlighMin = (window.pageType === 'main') ? 40 : 15;
 
 			        var commentClassLabel = 'rounded-gray';
-			        if (collapsedComments.length >= greenHighlightMin) commentClassLabel = 'rounded-green';
-			        if (collapsedComments.length >= orangeHighlightMin) commentClassLabel = 'rounded-orange';
-			        if (collapsedComments.length >= redHighlightMin) commentClassLabel = 'rounded-red';
-			        if (collapsedComments.length >= blueHighlighMin) commentClassLabel = 'rounded-blue';
+			        //if (collapsedComments.length >= greenHighlightMin) commentClassLabel = 'rounded-orange';
+			        //if (collapsedComments.length >= orangeHighlightMin) commentClassLabel = 'rounded-orange';
+			        //if (collapsedComments.length >= redHighlightMin) commentClassLabel = 'rounded-orange';
+			        //if (collapsedComments.length >= blueHighlighMin) commentClassLabel = 'rounded-orange';
                     var tagCloudHtml = '<span style="display: inline-block;height:' + maxHeightPercent + '%;border-radius: 3px;background:#ff6600;color:#000000">' + tagCloudString + '</span><br/>';
-				    button.html('[+]');
-				    collapsedText.html(' | <span class="' + commentClassLabel + '">' + collapsedComments.length + ' comments</span><br/><span class="htext">' + bestSentence + '</span><br/>');
+                    button.html('[+]');
+			        var divWidth = Math.min(600, 60 + collapsedComments.length * 15);
+				    collapsedText.html(' | '+'<span>' + collapsedComments.length + ' comments '+tagCloudString+'</span><br/><span class="htext">' + bestSentence + '</span><br/>');
 					if (isDeleted)
 					{
 						_this.parent().next().show();
@@ -371,3 +385,13 @@ var stemmer = function () {
         e("Overstemmed", a)); b = /.*generic(ally)?$/; b.test(f) && (a += "ic", e("Overstemmed", a)); b = /.*generous(ly)?$/; b.test(f) && (a += "ous", e("Overstemmed", a)); b = /.*communit(ies)?y?/; b.test(f) && (a += "iti", e("Overstemmed", a)); return a
     }
 }();
+
+function findMedian(data) {
+
+    var middle = Math.floor((data.length - 1) / 2); // NB: operator precedence
+    if (data.length % 2) {
+        return data[middle];
+    } else {
+        return (data[middle] + data[middle + 1]) / 2.0;
+    }
+}
